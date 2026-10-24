@@ -14,24 +14,30 @@ export default function GuessNumberScreen() {
 
   // Le nombre secret est un état : on passe la fonction (sans parenthèses), React l'appelle une seule fois
   const [secretNumber, setSecretNumber] = useState(drawSecretNumber);
+  // Nombre d'essais de la partie en cours
+  const [attempts, setAttempts] = useState(0);
 
-  // Code du bouton Oui : nouveau nombre secret, saisie vidée
+  // Code du bouton Oui : nouveau nombre secret, saisie vidée, compteur remis à zéro
   function handleReplay() {
     setSecretNumber(drawSecretNumber());
     setGuess("");
+    setAttempts(0);
   }
 
   // Code du clic sur Deviner : une fonction déclarée dans le composant
   function handleGuess() {
     // La saisie est du texte : on la convertit en nombre avant de comparer
     const guessedNumber = Number(guess);
+    // La nouvelle valeur n'arrive qu'au prochain affichage : on la calcule dans une constante
+    const newAttempts = attempts + 1;
+    setAttempts(newAttempts);
     if (guessedNumber < secretNumber) {
       Alert.alert("Trop petit");
     } else if (guessedNumber > secretNumber) {
       Alert.alert("Trop grand");
     } else if (guessedNumber === secretNumber) {
       // Une seule alerte remplace Info("Tu as gagné") suivi de OuiNon("Veux-tu refaire une partie")
-      Alert.alert("Tu as gagné", "Veux-tu refaire une partie", [
+      Alert.alert("Tu as gagné ! Nombre d'essais : " + newAttempts, "Veux-tu refaire une partie", [
         { text: "Non" },
         { text: "Oui", onPress: handleReplay },
       ]);
