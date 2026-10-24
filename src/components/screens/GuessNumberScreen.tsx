@@ -1,8 +1,43 @@
 import { SymbolView } from "expo-symbols";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { useState } from "react";
+import { Alert, Pressable, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+// Tire un nombre entre 1 et 100, comme Hasard(1,100) en WLangage
+function drawSecretNumber() {
+  return Math.floor(Math.random() * 100) + 1;
+}
+
 export default function GuessNumberScreen() {
+  // État de l'écran : la saisie, et la fonction qui la modifie
+  const [guess, setGuess] = useState("");
+
+  // Le nombre secret est un état : on passe la fonction (sans parenthèses), React l'appelle une seule fois
+  const [secretNumber, setSecretNumber] = useState(drawSecretNumber);
+
+  // Code du bouton Oui : nouveau nombre secret, saisie vidée
+  function handleReplay() {
+    setSecretNumber(drawSecretNumber());
+    setGuess("");
+  }
+
+  // Code du clic sur Deviner : une fonction déclarée dans le composant
+  function handleGuess() {
+    // La saisie est du texte : on la convertit en nombre avant de comparer
+    const guessedNumber = Number(guess);
+    if (guessedNumber < secretNumber) {
+      Alert.alert("Trop petit");
+    } else if (guessedNumber > secretNumber) {
+      Alert.alert("Trop grand");
+    } else if (guessedNumber === secretNumber) {
+      // Une seule alerte remplace Info("Tu as gagné") suivi de OuiNon("Veux-tu refaire une partie")
+      Alert.alert("Tu as gagné", "Veux-tu refaire une partie", [
+        { text: "Non" },
+        { text: "Oui", onPress: handleReplay },
+      ]);
+    }
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[#eaeaea] p-2">
       {/* En-tête : icône menu à gauche, titre centré dans la place restante */}
@@ -17,9 +52,11 @@ export default function GuessNumberScreen() {
         className="mt-12 h-12 border border-gray-300 bg-white px-2 text-right"
         placeholder="Saisis un entier"
         keyboardType="numeric"
+        value={guess}
+        onChangeText={(text) => setGuess(text)}
       />
       {/* Bouton : fond bleu relevé sur la capture plan1 */}
-      <Pressable className="mt-6 h-12 items-center justify-center rounded bg-[#075289]">
+      <Pressable className="mt-6 h-12 items-center justify-center rounded bg-[#075289]" onPress={handleGuess}>
         <Text className="text-white">Deviner</Text>
       </Pressable>
     </SafeAreaView>
