@@ -1,5 +1,5 @@
-import GuessNumberScreen from "@/components/screens/GuessNumberScreen";
+import FizzBuzzScreen from "@/components/screens/FizzBuzzScreen";
 
 export default function Index() {
-  return <GuessNumberScreen />;
+  return <FizzBuzzScreen />;
 }
