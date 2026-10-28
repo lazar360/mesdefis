@@ -1,5 +1,5 @@
-import FizzBuzzScreen from "@/components/screens/FizzBuzzScreen";
+import PalindromeScreen from "@/components/screens/PalindromeScreen";
 
 export default function Index() {
-  return <FizzBuzzScreen />;
+  return <PalindromeScreen />;
 }
