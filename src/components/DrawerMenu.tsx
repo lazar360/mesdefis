@@ -1,7 +1,7 @@
 import type { DrawerContentComponentProps } from "expo-router/drawer";
 import { SymbolView } from "expo-symbols";
 import type { ReactNode } from "react";
-import { Pressable, Text } from "react-native";
+import { Alert, BackHandler, Pressable, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // Une ligne du menu : l'icône (un composant), le libellé et la fonction du clic
@@ -24,6 +24,17 @@ function MenuRow({ icon, label, onPress }: MenuRowProps) {
 
 // Le contenu du volet, identique à FI_Menu ; le Drawer lui passe navigation
 export default function DrawerMenu({ navigation }: DrawerContentComponentProps) {
+  // CAS 6 : OuiNon("Voulez-vous quitter l'application ?") puis FinProgramme()
+  function handleQuit() {
+    // Le texte de OuiNon devient le titre ; undefined : pas de second texte
+    Alert.alert("Voulez-vous quitter l'application ?", undefined, [
+      // Non : on referme simplement le volet
+      { text: "Non", onPress: () => navigation.closeDrawer() },
+      // Oui : ferme l'application (Android seulement, iOS l'interdit)
+      { text: "Oui", onPress: () => BackHandler.exitApp() },
+    ]);
+  }
+
   return (
     <SafeAreaView className="flex-1 bg-[#eaeaea]">
       {/* CAS 1 : la ligne MENU referme simplement le volet */}
@@ -52,11 +63,11 @@ export default function DrawerMenu({ navigation }: DrawerContentComponentProps) 
         label="Palindrome"
         onPress={() => navigation.navigate("palindrome")}
       />
-      {/* CAS 6 : Quitter, sans action pour l'instant (c'est le challenge) */}
+      {/* CAS 6 : Quitter, après confirmation */}
       <MenuRow
         icon={<SymbolView name={{ ios: "rectangle.portrait.and.arrow.right", android: "logout", web: "logout" }} size={28} tintColor="black" />}
         label="Quitter"
-        onPress={() => {}}
+        onPress={handleQuit}
       />
     </SafeAreaView>
   );
