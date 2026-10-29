@@ -1,5 +1,5 @@
-import PalindromeScreen from "@/components/screens/PalindromeScreen";
+import GuessNumberScreen from "@/components/screens/GuessNumberScreen";
 
 export default function Index() {
-  return <PalindromeScreen />;
+  return <GuessNumberScreen />;
 }
