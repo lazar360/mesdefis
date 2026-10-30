@@ -28,3 +28,8 @@ export async function getGames() {
   const rows: Game[] = await db.getAllAsync("SELECT * FROM games ORDER BY id DESC");
   return rows;
 }
+
+// Supprime toutes les parties de la table
+export async function clearGames() {
+  await db.runAsync("DELETE FROM games");
+}

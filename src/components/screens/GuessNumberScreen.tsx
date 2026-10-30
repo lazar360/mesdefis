@@ -5,7 +5,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ChallengeHeader from "@/components/ChallengeHeader";
 import PrimaryButton from "@/components/PrimaryButton";
 import Statement from "@/components/Statement";
-import { addGame, getGames, type Game } from "@/db/database";
+import { addGame, clearGames, getGames, type Game } from "@/db/database";
 
 // État de départ : un tableau vide, déjà typé (aucune partie au lancement)
 const noGames: Game[] = [];
@@ -40,6 +40,20 @@ export default function GuessNumberScreen() {
     setSecretNumber(drawSecretNumber());
     setGuess("");
     setAttempts(0);
+  }
+
+  // Code du bouton Oui de la confirmation : vide la table, puis la liste affichée
+  async function handleClearConfirmed() {
+    await clearGames();
+    setGames(noGames);
+  }
+
+  // Code du clic sur Effacer l'historique : rien n'est effacé sans confirmation
+  function handleClearHistory() {
+    Alert.alert("Veux-tu effacer l'historique ?", undefined, [
+      { text: "Non" },
+      { text: "Oui", onPress: handleClearConfirmed },
+    ]);
   }
 
   // Code du clic sur Deviner : async, parce qu'il attend la base de données
@@ -93,6 +107,7 @@ export default function GuessNumberScreen() {
           </View>
         )}
       />
+      <PrimaryButton label="Effacer l'historique" onPress={handleClearHistory} />
     </SafeAreaView>
   );
 }
