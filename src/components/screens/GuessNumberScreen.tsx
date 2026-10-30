@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { Alert, TextInput } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, FlatList, Text, TextInput, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import ChallengeHeader from "@/components/ChallengeHeader";
 import PrimaryButton from "@/components/PrimaryButton";
 import Statement from "@/components/Statement";
+import { addGame, getGames, type Game } from "@/db/database";
+
+// État de départ : un tableau vide, déjà typé (aucune partie au lancement)
+const noGames: Game[] = [];
 
 // Tire un nombre entre 1 et 100, comme Hasard(1,100) en WLangage
 function drawSecretNumber() {
@@ -19,6 +23,17 @@ export default function GuessNumberScreen() {
   const [secretNumber, setSecretNumber] = useState(drawSecretNumber);
   // Nombre d'essais de la partie en cours
   const [attempts, setAttempts] = useState(0);
+  // Les dernières parties gagnées, la plus récente en premier
+  const [games, setGames] = useState(noGames);
+
+  // Exécuté une seule fois, à l'ouverture de l'écran (le [] à la fin) : charge l'historique
+  useEffect(() => {
+    // La fonction passée à useEffect ne peut pas être async : on en déclare une dedans
+    async function load() {
+      setGames(await getGames());
+    }
+    load();
+  }, []);
 
   // Code du bouton Oui : nouveau nombre secret, saisie vidée, compteur remis à zéro
   function handleReplay() {
@@ -27,8 +42,8 @@ export default function GuessNumberScreen() {
     setAttempts(0);
   }
 
-  // Code du clic sur Deviner : une fonction déclarée dans le composant
-  function handleGuess() {
+  // Code du clic sur Deviner : async, parce qu'il attend la base de données
+  async function handleGuess() {
     // La saisie est du texte : on la convertit en nombre avant de comparer
     const guessedNumber = Number(guess);
     // La nouvelle valeur n'arrive qu'au prochain affichage : on la calcule dans une constante
@@ -44,6 +59,9 @@ export default function GuessNumberScreen() {
         { text: "Non" },
         { text: "Oui", onPress: handleReplay },
       ]);
+      // Enregistre la partie dans la table, puis relit toute la table dans l'état
+      await addGame(newAttempts);
+      setGames(await getGames());
     }
   }
 
@@ -61,6 +79,20 @@ export default function GuessNumberScreen() {
         onChangeText={(text) => setGuess(text)}
       />
       <PrimaryButton label="Deviner" onPress={handleGuess} />
+      {/* Ajout par rapport à plan1 : l'historique des parties gagnées */}
+      <Text className="mt-4 text-base font-bold">Dernières parties</Text>
+      <FlatList
+        className="mt-2 flex-1 border border-gray-400 bg-white"
+        data={games}
+        // La clé unique de chaque ligne : l'identifiant de la partie
+        keyExtractor={(item) => String(item.id)}
+        renderItem={({ item }) => (
+          <View className="flex-row justify-between border-b border-gray-300 p-2">
+            <Text>{item.played_at}</Text>
+            <Text>{item.attempts} essais</Text>
+          </View>
+        )}
+      />
     </SafeAreaView>
   );
 }
