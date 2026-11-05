@@ -1,56 +1,79 @@
-# Welcome to your Expo app 👋
+# MesDefis : React Native pour développeurs WinDev
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Tu sais programmer en WinDev ou WinDev Mobile, et tu n'as jamais touché à React Native ? Ce dépôt est le code du cours vidéo de la chaîne **DevNico**, le pendant React Native du cours WinDev Mobile Débutant.
 
-## Get started
+En 10 modules, soit environ 4 h de cours, tu construis une vraie application Android. Chaque notion part de ce que tu connais déjà en WinDev, puis montre ce qui change.
 
-1. Install dependencies
+<p align="center">
+  <img src="docs/images/nombre-a-deviner.png" width="240" alt="L'écran Nombre à deviner, avec la liste des dernières parties">
+  <img src="docs/images/menu.png" width="240" alt="Le menu coulissant de l'application">
+  <img src="docs/images/palindrome.png" width="240" alt="L'écran Palindrome, avec ses résultats en table">
+</p>
 
-   ```bash
-   npm install
-   ```
+## L'application
 
-2. Start the app
+**MesDefis** réunit quatre petits défis de programmation : Nombre à deviner, Mot le plus long, FizzBuzz et Palindrome. On passe de l'un à l'autre par un menu coulissant. Les parties gagnées sont enregistrées dans une base SQLite, et l'application finit en APK installé sur ton téléphone.
 
-   ```bash
-   npx expo start
-   ```
+## Le programme
 
-In the output, you'll find options to open the app in a
+Chaque module a une leçon, puis un challenge à faire seul. Les durées sont celles du texte parlé : les vidéos montées seront un peu plus longues.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+| # | Tu apprends | Ton challenge | Durée |
+|---|---|---|---|
+| 01 | Installer les outils et lancer l'app sur ton téléphone | Changer le texte d'accueil | 15 min |
+| 02 | Lire un projet : des fichiers au lieu d'un éditeur | Retrouver 3 éléments de l'explorateur WinDev | 15 min |
+| 03 | Écrire un premier écran avec des composants et du JSX | Mot le plus long, écran statique | 22 min |
+| 04 | Mettre en page avec Flexbox et NativeWind | Mot le plus long, fidèle à la maquette | 30 min |
+| 05 | Rendre un écran vivant avec `useState` | Compter les essais | 31 min |
+| 06 | Créer des composants réutilisables avec des props | Migrer les 2 autres écrans | 26 min |
+| 07 | Afficher des listes avec `FlatList` | Mot le plus long jouable | 29 min |
+| 08 | Ajouter un menu coulissant avec Expo Router | Ligne « Quitter » | 21 min |
+| 09 | Garder les données avec expo-sqlite | Effacer l'historique | 35 min |
+| 10 | Générer l'APK avec EAS Build | Version 1.0.1 | 15 min |
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Ce que tu connais déjà
 
-## Get a fresh project
+| En WinDev | En React Native |
+|---|---|
+| Une fenêtre ou un plan | Un écran, c'est-à-dire un composant |
+| `OuiNon` | `Alert`, avec deux boutons |
+| Un tableau associatif | Un tableau d'objets |
+| Une fenêtre coulissante | Un Drawer |
+| Lire un fichier HFSQL enregistrement par enregistrement | Recevoir tout le résultat d'une requête SQLite |
+| Générer l'APK sur ton PC, avec Gradle | Le générer sur les serveurs d'Expo, avec EAS Build |
 
-When you're ready, run:
+## Suivre le cours avec ce dépôt
+
+Tu suis le cours depuis le module 01 ? Crée ton projet comme dans la vidéo, et continue dedans du début à la fin.
+
+Tu veux prendre le cours en route ? Chaque module a deux tags :
+
+- `module-XX-lecon` : le projet à la fin de la leçon, c'est le départ du challenge ;
+- `module-XX` : le projet à la fin du challenge, c'est la correction et le départ du module suivant.
+
+Par exemple, pour commencer le module 05 :
 
 ```bash
-npm run reset-project
+git clone https://github.com/lazar360/mesdefis mesdefis
+cd mesdefis
+git switch -c mon-module-05 module-04
+npm install
+npx expo start
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Scanne ensuite le QR code avec l'application Expo Go.
 
-### Other setup steps
+Pour voir la correction d'un challenge, compare ton travail au tag du module :
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+git diff module-05
+```
 
-## Learn more
+## Ce qu'il te faut
 
-To learn more about developing your project with Expo, look at the following resources:
+- Node.js 22.13 ou plus récent, et Git ;
+- un éditeur de code, par exemple VS Code ;
+- un téléphone Android avec Expo Go ;
+- un compte Expo, gratuit, pour le module 10.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Le projet utilise Expo SDK 58. Une version d'Expo Go n'ouvre qu'un seul SDK : si Expo Go refuse le projet, commence par vérifier ce point.
